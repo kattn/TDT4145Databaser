@@ -1,0 +1,65 @@
+CREATE TABLE Okt (
+	dato		DATE NOT NULL PRIMARY KEY,
+	tidspunkt	TIME NOT NULL PRIMARY KEY,
+	varighet	TIME NOT NULL,
+	type		TEXT NOT NULL,
+	vurdering	TEXT NOT NULL
+);
+
+CREATE TABLE Ovelse (
+	navn		STRING	NOT NULL PRIMARY KEY,
+	beskrivelse	TEXT NOT NULL,
+	intensitet	INTEGER NOT NULL,
+	maalId		INTEGER NOT NULL,
+	lengde		INTEGER,
+	marsj		BOOLEAN,
+	repetisjoner 	INTEGER,
+	sett		INTEGER,
+	belastning	INTEGER
+);
+
+CREATE TABLE Utfort (
+	prestasjon	INTEGER,
+	navn STRING NOT NULL,
+	dato STRING NOT NULL,
+	PRIMARY KEY (navn, dato),
+	FOREIGN KEY(navn) REFERENCES Ovelse(navn)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	FOREIGN KEY(dato) REFERENCES Okt(dato)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+CREATE TABLE KanErstatte (
+	erstatter_navn STRING NOT NULL PRIMARY KEY,
+	FOREIGN KEY(erstatter_navn) REFERENCES Ovelse(navn)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+CREATE TABLE Dagsform(
+	dato		DATE NOT NULL PRIMARY KEY,
+	dagsform	TEXT NOT NULL,
+	hvilepuls	INTEGER NOT NULL,
+	luftkvalitet	INTEGER,
+	temperatur	INTEGER,
+	vaer		STRING,
+	FOREIGN KEY(dato) REFERENCES Okt(dato)
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+);
+
+CREATE TABLE Maal(
+	maalId INTEGER NOT NULL PRIMARY KEY,
+	lengde INTEGER,
+	varighet	TIME,
+	repetisjoner INTEGER,
+	sett	INTEGER,
+	belastning INTEGER,
+	dato DATE,
+	navn STRING NOT NULL,
+	FOREIGN KEY(maalid) REFERENCES Ovelse(maalid)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
