@@ -1,14 +1,13 @@
-package treningsDagbok;
-import db_javaimplementation;
+package Innlevering2;
 import java.io.*;
-import java.System.*;
 
-public class treningsDagbok{
+public class Innlevering2{
 
-    private InputStreamReader cin = null;
+    private BufferedReader cin = null;
     private String output = null;
 
     private int welcomeText() throws IOException{
+        int ret = -2;
         try {
             output = "Welcome to your workoutdiary!\n" +
                     "If at anytime you want to repeat the last message type repeat.\n" +
@@ -26,20 +25,20 @@ public class treningsDagbok{
                     "8 - Add, reorganize and delete exercises, groups and subgroups\n";
             String inp;
             boolean run = true;
-            System.out.print(output)
+            System.out.print(output);
             while(run){
-                inp = (String) cin.read();
-                switch (inp){ // trenger ikke switch, men skrev den før e tenkte...
+                inp = cin.readLine();
+                switch (inp){
                     case "repeat":
                         System.out.print(output);
                         break;
                     case "quit":
-                        return -1;
-                    case default:
+                        ret = -1;
+                    default:
                         break;
                 }
-                if( 0<(int) inp && (int) inp<9){
-                    return (int) inp;
+                if( 0< Integer.valueOf(inp) && Integer.valueOf(inp) <9){
+                    ret = Integer.valueOf(inp);
                 } else {
                     System.out.print("Need a number between 1 and 8, quit or repeat");
                 }
@@ -48,6 +47,7 @@ public class treningsDagbok{
             if (cin != null){
                 cin.close();
             }
+            return ret;
         }
     }
 
@@ -83,26 +83,30 @@ public class treningsDagbok{
         System.out.print("userStory8");
     }
 
-    public void main(Strings[] args){
-        cin = new InputStreamReader(System.in);
-        switch (welcomeText()){
-            case 1: userStory1();
-                break;
-            case 2: userStory2();
-                break;
-            case 3: userStory3();
-                break;
-            case 4: userStory4();
-                break;
-            case 5: userStory5();
-                break;
-            case 6: userStory6();
-                break;
-            case 7: userStory7();
-                break;
-            case 8: userStory8();
-                break;
-            case -1: return;
+    public void main(String[] args){
+        cin = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            switch (welcomeText()){
+                case 1: userStory1();
+                    break;
+                case 2: userStory2();
+                    break;
+                case 3: userStory3();
+                    break;
+                case 4: userStory4();
+                    break;
+                case 5: userStory5();
+                    break;
+                case 6: userStory6();
+                    break;
+                case 7: userStory7();
+                    break;
+                case 8: userStory8();
+                    break;
+                case -1: return;
+            }
+        } catch (IOException e){
+            System.out.print("Catched a IOException from the userCasePicker");
         }
     }
 }
