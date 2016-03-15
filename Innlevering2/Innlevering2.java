@@ -103,9 +103,17 @@ public class Innlevering2{
     }
 
     private static boolean userStory2(){
-        output = "2 - Register a new workoutgoal, view old goals or view known exercises\n";
+        output = "2 - Register a new workout goal, view old goals or view known exercises\n";
         System.out.print(output);
+        System.out.println("1 - register new workout goal\n" +
+                "2 - View old goals\n" +
+                "3 - View known exercises\n");
+        try {
+            String inp = cin.readLine();
 
+        } catch(IOException e){
+            System.out.print(e);
+        }
         return true;
 
     }
