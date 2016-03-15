@@ -1,5 +1,6 @@
 package Innlevering2;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Innlevering2{
 
@@ -95,11 +96,54 @@ public class Innlevering2{
                 System.out.print(inp+" ");
             }
 
+            ArrayList<String[]> ovelser = getOvelser();
+
+
         } catch(IOException e){
             System.out.print(e);
         }
 
         return true;
+    }
+
+    private static ArrayList<String[]> getOvelser(){
+        ArrayList<String[]> strings = new ArrayList<String[]>();
+        System.out.println("Add an exercise(y), type q when done.");
+        try {
+            String inp = cin.readLine();
+            while(!inp.equals("q")){
+                String[] q = new String[10];
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Date(dd/mm/yyyy):");
+                inp = cin.readLine();
+                q[1] = inp.split("/")[0];
+                q[2] = inp.split("/")[1];
+                q[3] = inp.split("/")[2];
+                System.out.println("Description(on a single line):");
+                q[4] = cin.readLine();
+                System.out.println("Length(0 if not needed): ");
+                q[5] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+
+
+
+            }
+        } catch (IOException e){
+            System.out.print(e);
+        }
+        return strings;
     }
 
     private static boolean userStory2(){
@@ -159,7 +203,26 @@ public class Innlevering2{
 
                      */
                 case "2":
-                    break;
+                    System.out.println("Wanted exercise:");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    /*
+                    QUERY AFTER NAME IN MAAL USING inp.
+                    put it in a arraylist of string arrays following the this example
+                    query: dd,mm,yyyy,navn,lengde,varighet,repitisjon,sett,belastning
+                     */
+                    ArrayList<String[]> strings = new ArrayList<String[]>();
+                    for(String[] arr: strings) {
+                        query = arr;
+                        System.out.println("Date: " + query[0] + "/" + query[1] + "/" + query[2]);
+                        System.out.println("Name: " + query[3]);
+                        System.out.println("Length(0 if not needed): " + query[4]);
+                        System.out.println("Duration(0 if not needed): " + query[5]);
+                        System.out.println("Repetition(0 if not needed): " + query[6]);
+                        System.out.println("Sets(0 if not needed): " + query[7]);
+                        System.out.println("Weight(0 if not needed): " + query[8]);
+                    }
                 case "3":
                     break;
             }
