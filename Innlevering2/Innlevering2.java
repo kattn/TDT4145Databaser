@@ -5,6 +5,11 @@ public class Innlevering2{
 
     private static BufferedReader cin = null;
     private static String output = null;
+    
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/STUDENTS";
+    static final String username = "username";
+    static final String password = "password";
 
     private static int welcomeText() throws IOException{
         int ret = -2;
@@ -98,7 +103,51 @@ public class Innlevering2{
         } catch(IOException e){
             System.out.print(e);
         }
-
+        Connection  connection = null;
+        Statement statement = null;
+        
+        try {
+            Class.forName(JDBC_DRIVER);
+            
+            connection = DriverManager.getConnection(DB_URL, username, password);
+            
+            statement = connection.createStatement();
+            String sql = "INSERT INTO Okt(dato, tidspunkt, varighet, type, vurdering)"
+                        + "VALUES ("
+                        + query[2]+ "-" + query[1] + "-" + query[0] + ", "
+                        + query[3] + ":" + query[5] + ":00, "
+                        + query[6] + ":" + query[7] + ", "
+                        + query[8] + ")";
+            
+            string sql2 = "INSERT INTO Dagsform"
+                          + "VALUES ("
+                          + query[2]+ "-" + query[1] + "-" + query[0] + ", "
+                          +
+            
+                        statement.executeUpdate(sql);
+            System.out.println("Insert into " + tableName + " complete. ")
+            return true;
+        } catch(SQLException se){
+            se.printStackTrace();
+            return false;
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        } finally {
+            try{
+                if(stmt!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }// do nothing
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end finally try
+        }
+    }
+        
         return true;
     }
 
@@ -128,30 +177,293 @@ public class Innlevering2{
         output = "4 - Check the difference between a specific result and the best result reached during a" +
             "given period and the difference between the result and the current goal";
         System.out.print(output);
+        Connection  connection = null;
+        Statement statement = null;
+            try {
+            Class.forName(JDBC_DRIVER);
+
+            connection = DriverManager.getConnection(DB_URL, username, password);
+
+            statement = connection.createStatement();
+            String sql = "";
+            statement.executeUpdate(sql);
+            return true;
+            } catch(SQLException se){
+            se.printStackTrace();
+            return false;
+            } catch(Exception e){
+            e.printStackTrace();
+            return false;
+            } finally {
+            try{
+            if(stmt!=null)
+            conn.close();
+            }catch(SQLException se){
+            }// do nothing
+            try{
+            if(conn!=null)
+            conn.close();
+            }catch(SQLException se){
+            se.printStackTrace();
+            }//end finally try
+        }
+
+
         return true;
     }
 
     private static boolean userStory5(){
         output = "5 - Copy a specific workout as a template";
         System.out.print(output);
+        //TRENGER HER DATO OG NAVN FOR NY ØKT, BRUKES I INSERT STATEMENT, OG DATO & TIDSPUNKT FOR ØKT SOM SKAL KOPIERES
+
+        Connection  connection = null;
+        Statement statement = null;
+
+        try {
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "INSERT INTO Okt(" + dato +", " + ", tidspunkt, varighet, type, vurdering) SELECT tidspunkt, varighet, type, vurdering FROM Okt WHERE Okt.dato =" + gittDato + " AND Okt.tidspunkt=" + gittTidspunkt + ";";
+
+        statement.executeUpdate(sql);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }
         return true;
     }
 
     private static boolean userStory6(){
         output = "6 - Check the correlation between results and daily form";
         System.out.print(output);
+
+        //Bruker Pearson sin korrelasjons koeffisient formel for å sjekke korrelasjon mellom
+        //hvilepuls i dagsform for en dato og intensitet i ovelser på en dato
+
+        //LYKKE TIL HAJEM :D
+
+
+
         return true;
     }
 
     private static boolean userStory7(){
         output = "7 - Print all workoutnotes in a log";
         System.out.print(output);
+        Connection  connection = null;
+        Statement statement = null;
+
+        try {
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "Select *"
+                    +"FROM Okt, Dagsform, Ovelse"
+                    +"WHERE Okt.dato = Dagsform.dato AND Okt.dato = Ovelse.dato"
+                    +"ORDER BY Okt.dato";
+        //Kan hende vi må fjerne duplicates av okt ovenfor, slik at en okt nevnes en gang med alle øvelsene :S
+
+        statement.executeUpdate(sql);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }
         return true;
     }
 
     private static boolean userStory8(){
         output = "8 - Add, reorganize and delete exercises, groups and subgroups";
         System.out.print(output);
+        /*Add an exercise
+         *TRENGER FØLGENDE VALUES SOM INPUT:
+         - alt for en exercise
+         - dato for økten den var en del av
+         */
+        if(choice == 1){
+        Connection  connection = null;
+        Statement statement = null;
+
+        try {
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "SELECT INTO Ovelse" +
+        + "VALUES("
+        + navn + "," + beskrivelse + "," + intensitet + "," + maalId + ","
+        +  lengde + "," + marsj + "," + repetisjoner + "," + sett + "," + belastning
+        + ");"
+
+        String sql2 = "INSERT INTO Utfort"
+        + "VALUES ("
+        + prestasjon
+        + "," + navn
+        + "," + dato
+        + ");";
+        statement.executeUpdate(sql);
+        statement.executeUpdate(sql2);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }
+        }
+
+
+
+
+        else if(choice == 2){
+        //Delete single exercise
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "DELETE FROM Utfort WHERE dato=" dato + "AND navn=" navn + ";"
+        statement.executeUpdate(sql);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }
+        }
+
+
+
+
+        else if(choice == 3) {
+        //delete based on date
+        //TRENGER: Datoen ovelsen ble utført
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "DELETE FROM Utfort WHERE dato=" dato + ";"
+        statement.executeUpdate(sql);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }
+        }
+
+
+
+
+        else if(choice == 4){
+
+        //Delete øvelse based on navn
+        Class.forName(JDBC_DRIVER);
+
+        connection = DriverManager.getConnection(DB_URL, username, password);
+
+        statement = connection.createStatement();
+        String sql = "DELETE FROM Utfort WHERE navn=" navn + ";"
+        statement.executeUpdate(sql);
+        return true;
+        } catch(SQLException se){
+        se.printStackTrace();
+        return false;
+        } catch(Exception e){
+        e.printStackTrace();
+        return false;
+        } finally {
+        try{
+        if(stmt!=null)
+        conn.close();
+        }catch(SQLException se){
+        }// do nothing
+        try{
+        if(conn!=null)
+        conn.close();
+        }catch(SQLException se){
+        se.printStackTrace();
+        }//end finally try
+        }}
         return true;
     }
 
