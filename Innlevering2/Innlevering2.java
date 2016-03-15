@@ -90,6 +90,7 @@ public class Innlevering2{
                 return false;
             query[11] = tempInp;
 
+            /* INSERT query into the databse */
             for(String inp: query){
                 System.out.print(inp+" ");
             }
@@ -102,8 +103,9 @@ public class Innlevering2{
     }
 
     private static boolean userStory2(){
-        output = "2 - Register a new workoutgoal, view old goals or view known exercises";
+        output = "2 - Register a new workoutgoal, view old goals or view known exercises\n";
         System.out.print(output);
+
         return true;
 
     }
