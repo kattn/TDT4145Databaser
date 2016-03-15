@@ -38,6 +38,7 @@ public class createTables {
 			statement = connection.createStatement();
 			String ovelse = "CREATE TABLE Ovelse" +
 							"(navn STRING NOT NULL PRIMARY KEY" +
+                            "dato DATE NOT NULL PRIMARY KEY" +
 							"beskrivelse	TEXT NOT NULL," +
 							"intensitet	INTEGER NOT NULL," +
 							"maalId		INTEGER NOT NULL," +
