@@ -229,6 +229,13 @@ public class Innlevering2{
         output = "4 - Check the difference between a specific result and the best result reached during a" +
             "given period and the difference between the result and the current goal";
         System.out.print(output);
+        /*Trenger følgende:
+            - pastDate = dato som definerer tid tilbake, må sjekke at den enten er 1 uke, 1 eller 3 måneder
+            - maalIdSpesifikk = iden for det spesifikke målet
+            - aktivtMaal = aktivt maalId for perioden
+            - type = type verdi man sjekker for målet
+         */
+
         Connection  connection = null;
         Statement statement = null;
             try {
@@ -237,8 +244,19 @@ public class Innlevering2{
             connection = DriverManager.getConnection(DB_URL, username, password);
 
             statement = connection.createStatement();
-            String sql = "";
-            statement.executeUpdate(sql);
+            String sql = "SELECT " + type + "FROM Maal WHERE Maal.maalId=" + maalIdSpesifikk +";";
+
+            String sql2 = "SELECT MAX(" + type + "FROM Okt WHERE Okt.dato>=" + pastDate + ";";
+
+            String current = "SELECT " + type + "FROM Maal WHERE Maal.maalId=" + aktivtMaal + ";";
+
+            //differansen mellom spesifikk mål og best i perioden
+            differanseSpesifikk = statement.executeUpdate(sql) - statement.executeUpdate(sql2);
+            System.out.println("Differnse mellom spesifikt mål og beste = " + differanseSpesifikk);
+
+            differanseAktiv = int(statement.executeUpdate(sql2)) - int(statement.executeUpdate(sql3));
+            System.out.println("Differanse mellom aktivt mål og best =" + differanseAktiv);
+
             return true;
             } catch(SQLException se){
             se.printStackTrace();
@@ -267,8 +285,12 @@ public class Innlevering2{
     private static boolean userStory5(){
         output = "5 - Copy a specific workout as a template";
         System.out.print(output);
-        //TRENGER HER DATO OG NAVN FOR NY ØKT, BRUKES I INSERT STATEMENT, OG DATO & TIDSPUNKT FOR ØKT SOM SKAL KOPIERES
-
+        /*Trenger følgende input:
+            - dato = dato for treningsøkten som skal lages
+            - tidspunkt  = tidspunkt for økten som skal lages
+            - gittDato = dato for treningsøkt som skal kopieres
+            - gittTidspunkt = tidspunkt for treningsøkt som skal kopieres
+        */
         Connection  connection = null;
         Statement statement = null;
 
@@ -278,7 +300,7 @@ public class Innlevering2{
         connection = DriverManager.getConnection(DB_URL, username, password);
 
         statement = connection.createStatement();
-        String sql = "INSERT INTO Okt(" + dato +", " + ", tidspunkt, varighet, type, vurdering) SELECT tidspunkt, varighet, type, vurdering FROM Okt WHERE Okt.dato =" + gittDato + " AND Okt.tidspunkt=" + gittTidspunkt + ";";
+        String sql = "INSERT INTO Okt(" + dato +", " + ", " + tidspunkt + ", varighet, type, vurdering) SELECT tidspunkt, varighet, type, vurdering FROM Okt WHERE Okt.dato =" + gittDato + " AND Okt.tidspunkt=" + gittTidspunkt + ";";
 
         statement.executeUpdate(sql);
         return true;
