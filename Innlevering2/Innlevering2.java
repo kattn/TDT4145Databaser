@@ -52,35 +52,45 @@ public class Innlevering2{
     }
 
     private static void userStory1(){
-        System.out.print("userStory1");
+        output = "1 - Register a new workout and how it went";
+        System.out.print(output);
+        //tar inn input til å lage query
     }
 
     private static void userStory2(){
-        System.out.print("userStory2");
+        output = "2 - Register a new workoutgoal, view old goals or view known exercises";
+        System.out.print(output);
     }
 
     private static void userStory3(){
-        System.out.print("userStory3");
+        output = "3 - View progression for a specific exercise over a preiod and current and old goals";
+        System.out.print(output);
     }
 
     private static void userStory4(){
-        System.out.print("userStory4");
+        output = "4 - Check the difference between a specific result and the best result reached during a" +
+            "given period and the difference between the result and the current goal";
+        System.out.print(output);
     }
 
     private static void userStory5(){
-        System.out.print("userStory5");
+        output = "5 - Copy a specific workout as a template";
+        System.out.print(output);
     }
 
     private static void userStory6(){
-        System.out.print("userStory6");
+        output = "6 - Check the correlation between results and daily form";
+        System.out.print(output);
     }
 
     private static void userStory7(){
-        System.out.print("userStory7");
+        output = "7 - Print all workoutnotes in a log";
+        System.out.print(output);
     }
 
     private static void userStory8(){
-        System.out.print("userStory8");
+        output = "8 - Add, reorganize and delete exercises, groups and subgroups";
+        System.out.print(output);
     }
 
     public static void main(String[] args){

@@ -1,6 +1,7 @@
-package Innlevering2
+package Innlevering2;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Queries{
 
@@ -16,7 +17,7 @@ public class Queries{
             Connection connection = DriverManager.getConnection(DB_URL, username, password);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM" + table + "WHERE name = ?");
             statement.setString(1, row);
-            statement.executeUpdate()
+            statement.executeUpdate();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -26,7 +27,7 @@ public class Queries{
 
         Connection  connection = null;
         Statement statement = null;
-        try {
+        try{
             Class.forName(JDBC_DRIVER);
 
             connection = DriverManager.getConnection(DB_URL, username, password);
@@ -40,7 +41,7 @@ public class Queries{
             sql = sql[:sql.length()];
             sql.concat(")");
             statement.executeUpdate(sql);
-            System.out.println("Insert into " + tableName + " complete. ")
+            System.out.println("Insert into " + tableName + " complete. ");
             return true;
         } catch(SQLException se){
             se.printStackTrace();
