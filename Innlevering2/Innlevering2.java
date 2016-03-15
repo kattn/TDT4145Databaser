@@ -3,10 +3,10 @@ import java.io.*;
 
 public class Innlevering2{
 
-    private BufferedReader cin = null;
-    private String output = null;
+    private static BufferedReader cin = null;
+    private static String output = null;
 
-    private int welcomeText() throws IOException{
+    private static int welcomeText() throws IOException{
         int ret = -2;
         try {
             output = "Welcome to your workoutdiary!\n" +
@@ -51,39 +51,39 @@ public class Innlevering2{
         }
     }
 
-    private void userStory1(){
+    private static void userStory1(){
         System.out.print("userStory1");
     }
 
-    private void userStory2(){
+    private static void userStory2(){
         System.out.print("userStory2");
     }
 
-    private void userStory3(){
+    private static void userStory3(){
         System.out.print("userStory3");
     }
 
-    private void userStory4(){
+    private static void userStory4(){
         System.out.print("userStory4");
     }
 
-    private void userStory5(){
+    private static void userStory5(){
         System.out.print("userStory5");
     }
 
-    private void userStory6(){
+    private static void userStory6(){
         System.out.print("userStory6");
     }
 
-    private void userStory7(){
+    private static void userStory7(){
         System.out.print("userStory7");
     }
 
-    private void userStory8(){
+    private static void userStory8(){
         System.out.print("userStory8");
     }
 
-    public void main(String[] args){
+    public static void main(String[] args){
         cin = new BufferedReader(new InputStreamReader(System.in));
         try {
             switch (welcomeText()){
