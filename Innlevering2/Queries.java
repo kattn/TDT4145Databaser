@@ -38,7 +38,7 @@ public class Queries{
                 sql.concat(attribute);
                 sql.concat(", ");
             }
-            sql = sql[:sql.length()];
+            sql = sql.substring(0,sql.length()-2);
             sql.concat(")");
             statement.executeUpdate(sql);
             System.out.println("Insert into " + tableName + " complete. ");
@@ -51,13 +51,13 @@ public class Queries{
             return false;
         } finally {
             try{
-                if(stmt!=null)
-                    conn.close();
+                if(statement!=null)
+                    connection.close();
             }catch(SQLException se){
             }// do nothing
             try{
-                if(conn!=null)
-                    conn.close();
+                if(connection!=null)
+                    connection.close();
             }catch(SQLException se){
                 se.printStackTrace();
             }//end finally try
