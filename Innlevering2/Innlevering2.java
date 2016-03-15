@@ -3,6 +3,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.sql.*;
 
+//nr til Bjerke 95998212
+
 public class Innlevering2{
 
     private static BufferedReader cin = null;
@@ -51,14 +53,14 @@ public class Innlevering2{
 
     /*Klar til å legges til query, har en query string array av lengde 11 bestående av føgende
     dd,mm,yyyy,hh,mm,varighetHH,varighetMM,type,vurdering,hvilepuls,vaer,tempertur */
-    private static boolean userStory1(){
+    private static boolean userStory1() {
         System.out.print("1 - Register a new workout and how it went\n");
         //tar inn input til å lage query
         System.out.print("Type in date and time(dd/mm/yyyy,hh:mm):\n");
         String[] query = new String[12]; //dd,mm,yyyy,hh,mm,varighetHH,varighetMM,type,vurdering,hvilepuls,vaer,tempertur
-        try{
+        try {
             String tempInp = cin.readLine();
-            if((tempInp).equals("quit"))
+            if ((tempInp).equals("quit"))
                 return false;
             query[0] = tempInp.split(",")[0].split("/")[0];
             query[1] = tempInp.split(",")[0].split("/")[1];
@@ -67,91 +69,93 @@ public class Innlevering2{
             query[4] = tempInp.split(",")[1].split(":")[1];
             System.out.print("Type in the length of the workout(hh:mm):\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[5] = tempInp.split(":")[0];
             query[6] = tempInp.split(":")[1];
             System.out.print("Type in type of workout:\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[7] = tempInp;
             System.out.print("Type in evaluation of workout(on a line):\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[8] = tempInp;
             System.out.print("Type in daily resting pulse:\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[9] = tempInp;
             System.out.print("Type in type of weather:\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[10] = tempInp;
             System.out.print("Type in temp of workout:\n");
             tempInp = cin.readLine();
-            if(tempInp.equals("quit"))
+            if (tempInp.equals("quit"))
                 return false;
             query[11] = tempInp;
 
             /* INSERT query into the databse */
-            for(String inp: query){
-                System.out.print(inp+" ");
+            for (String inp : query) {
+                System.out.print(inp + " ");
             }
 
             ArrayList<String[]> ovelser = getOvelser();
+            //Ovlerser er en arraylist med String[12] av typen,
+            // name, dd,mm,yyyy,beskrivelse, lengde, intensitet, marsj(bool med 0 som false of 1 som true), repetisjoner, sett, belastning, prestasjon
 
 
-        } catch(IOException e){
+        } catch (IOException e) {
             System.out.print(e);
         }
-        Connection  connection = null;
+        Connection connection = null;
         Statement statement = null;
-        
-        try{
+
+        try {
             Class.forName(JDBC_DRIVER);
-            
+
             connection = DriverManager.getConnection(DB_URL, username, password);
-            
+
             statement = connection.createStatement();
             String sql = "INSERT INTO Okt(dato, tidspunkt, varighet, type, vurdering)"
-                        + "VALUES ("
-                        + query[2]+ "-" + query[1] + "-" + query[0] + ", "
-                        + query[3] + ":" + query[5] + ":00, "
-                        + query[6] + ":" + query[7] + ", "
-                        + query[8] + ")";
-            
+                    + "VALUES ("
+                    + query[2] + "-" + query[1] + "-" + query[0] + ", "
+                    + query[3] + ":" + query[5] + ":00, "
+                    + query[6] + ":" + query[7] + ", "
+                    + query[8] + ")";
+
             String sql2 = "INSERT INTO Dagsform"
-                          + "VALUES ("
-                          + query[2]+ "-" + query[1] + "-" + query[0] + ", "
-                          +
-            
-                        statement.executeQuery(sql);
-            System.out.println("Insert into " + tableName + " complete. ");
+                    + "VALUES ("
+                    + query[2] + "-" + query[1] + "-" + query[0] + ", "
+                    +
+
+                    statement.executeQuery(sql);
+            //System.out.println("Insert into " + tableName + " complete. ");
             return true;
-        } catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return false;
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         } finally {
-            try{
-                if(statement!=null)
+            try {
+                if (statement != null)
                     connection.close();
-            }catch(SQLException se){
+            } catch (SQLException se) {
             }// do nothing
-            try{
-                if(connection!=null)
+            try {
+                if (connection != null)
                     connection.close();
-            }catch(SQLException se){
+            } catch (SQLException se) {
                 se.printStackTrace();
             }//end finally try
+            return true;
         }
-        return  true;
     }
 
     private static ArrayList<String[]> getOvelser(){
@@ -159,8 +163,9 @@ public class Innlevering2{
         System.out.println("Add an exercise(y), type q when done.");
         try {
             String inp = cin.readLine();
+            String[] q;
             while(!inp.equals("q")){
-                String[] q = new String[10];
+                q = new String[12];
                 System.out.println("Name:");
                 q[0] = cin.readLine();
                 System.out.println("Date(dd/mm/yyyy):");
@@ -172,21 +177,22 @@ public class Innlevering2{
                 q[4] = cin.readLine();
                 System.out.println("Length(0 if not needed): ");
                 q[5] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
-                System.out.println("Name:");
-                q[0] = cin.readLine();
+                System.out.println("Intensity(0 if not needed): ");
+                q[6] = cin.readLine();
+                System.out.println("March(0 if not needed, 1 if it was): "); //er vel boolean i db, så 0 = false
+                q[7] = cin.readLine();
+                System.out.println("Number of repetitions(0 if not needed): ");
+                q[8] = cin.readLine();
+                System.out.println("Number of sets(0 if not needed): ");
+                q[9] = cin.readLine();
+                System.out.println("Weight(0 if not needed): ");
+                q[10] = cin.readLine();
+                System.out.println("Performance: ");
+                q[11] = cin.readLine();
 
-
-
+                strings.add(q);
+                System.out.println("Done adding exercises? q for yes, anything else for no");
+                inp = cin.readLine();
             }
         } catch (IOException e){
             System.out.print(e);
@@ -194,7 +200,7 @@ public class Innlevering2{
         return strings;
     }
 
-    private static boolean userStory2(){
+    private static boolean userStory2() {
         output = "2 - Register a new workout goal, view old goals or view known exercises\n";
         System.out.print(output);
         System.out.println("1 - Register new workout goal\n" +
@@ -202,46 +208,46 @@ public class Innlevering2{
                 "3 - View known exercises\n");
         try {
             String inp = cin.readLine();
-            switch (inp){
+            switch (inp) {
                 case "quit":
                     return false;
                 case "1":
                     String[] query = new String[9];
                     System.out.println("Date(dd/mm/yyyy:");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[0] = inp.split("/")[0];
                     query[1] = inp.split("/")[1];
                     query[2] = inp.split("/")[2];
                     System.out.println("Name of exercise:");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[3] = inp;
                     System.out.println("Goal length(0 if not needed):");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[4] = inp;
                     System.out.println("Goal duration(0 if not needed):");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[5] = inp;
                     System.out.println("Number repetitions(0 if not needed):");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[6] = inp;
                     System.out.println("Number of sets(0 if not needed):");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[7] = inp;
                     System.out.println("Goal weight(0 if not needed):");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
                     query[8] = inp;
 
@@ -249,101 +255,90 @@ public class Innlevering2{
                     INSERT INTO MAAL
                     query: dd,mm,yyyy,navn,lengde,varighet,repitisjon,sett,belastning
                     */
-                     Connection  connection = null;
-                     Statement statement = null;
-                     
-                     try{
-                     Class.forName(JDBC_DRIVER);
-                     
-                     connection = DriverManager.getConnection(DB_URL, username, password);
-                     
-                     statement = connection.createStatement();
-                     String sql = "INSERT INTO Maal "
+                    Connection connection = null;
+                    Statement statement = null;
+
+                    try {
+                        Class.forName(JDBC_DRIVER);
+
+                        connection = DriverManager.getConnection(DB_URL, username, password);
+
+                        statement = connection.createStatement();
+                        String sql = "INSERT INTO Maal "
                                 + "VALUES ("
-                                + query[2] +"-" +query[1] +"-" +query[0] +", "
-                                + query[3] +", "
-                                + query[4] +", "
-                                + query[5] +", "
-                                + query[6] +", "
-                                + query[7] +", "
-                                + query[8] +", "
+                                + query[2] + "-" + query[1] + "-" + query[0] + ", "
+                                + query[3] + ", "
+                                + query[4] + ", "
+                                + query[5] + ", "
+                                + query[6] + ", "
+                                + query[7] + ", "
+                                + query[8] + ", "
                                 + ");";
-                     
-                     int progression = Integer.valueOf(statement.executeQuery(sql2)) - Integer.valueOf(statement.executeQuery(sql).toString());
-                     System.out.println("Progression in given period:" + progression);
-                     return true;
-                     } catch(SQLException se){
-                     se.printStackTrace();
-                     return false;
-                     } catch(Exception e){
-                     e.printStackTrace();
-                     return false;
-                     } finally {
-                     try{
-                     if(statement!=null)
-                     connection.close();
-                     }catch(SQLException se){
-                     }// do nothing
-                     try{
-                     if(connection!=null)
-                     connection.close();
-                     }catch(SQLException se){
-                     se.printStackTrace();
-                     }//end finally try
-                     }
-                     
+
+                        int progression = Integer.valueOf(statement.executeQuery(sql2)) - Integer.valueOf(statement.executeQuery(sql).toString());
+                        System.out.println("Progression in given period:" + progression);
+                        return true;
+                    } catch (SQLException se) {
+                        se.printStackTrace();
+                        return false;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                    } finally {
+                        try {
+                            if (statement != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                        }// do nothing
+                        try {
+                            if (connection != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                            se.printStackTrace();
+                        }//end finally try
+                    }
+
                 case "2":
                     System.out.println("Wanted exercise:");
                     inp = cin.readLine();
-                    if(inp.equals("quit"))
+                    if (inp.equals("quit"))
                         return false;
-                    /*
-                    QUERY AFTER NAME IN MAAL USING inp.
-                    put it in a arraylist of string arrays following the this example
-                    query: dd,mm,yyyy,navn,lengde,varighet,repitisjon,sett,belastning
-                     */
-                    ArrayList<String[]> strings = new ArrayList<String[]>();
-                    for(String[] arr: strings) {
-                        query = arr;
-                        System.out.println("Date: " + query[0] + "/" + query[1] + "/" + query[2]);
-                        System.out.println("Name: " + query[3]);
-                        System.out.println("Length(0 if not needed): " + query[4]);
-                        System.out.println("Duration(0 if not needed): " + query[5]);
-                        System.out.println("Repetition(0 if not needed): " + query[6]);
-                        System.out.println("Sets(0 if not needed): " + query[7]);
-                        System.out.println("Weight(0 if not needed): " + query[8]);
-                    }
+
                     connection = null;
                     statement = null;
 
-                    try{
-                    Class.forName(JDBC_DRIVER);
+                    /*
+                    MANGLER Å BRUKE inp FOR Å VELGE RIKTIG OVELSE
+                     */
 
-                    connection = DriverManager.getConnection(DB_URL, username, password);
+                    try {
+                        Class.forName(JDBC_DRIVER);
 
-                    statement = connection.createStatement();
-                    String sql = "SELECT * FROM Maal;";
+                        connection = DriverManager.getConnection(DB_URL, username, password);
 
-                    System.out.println("Old goals" + executeQuery(sql));
-                    return true;
-                    } catch(SQLException se){
-                    se.printStackTrace();
-                    return false;
-                    } catch(Exception e){
-                    e.printStackTrace();
-                    return false;
+                        statement = connection.createStatement();
+                        String sql = "SELECT * FROM Maal;";
+
+                        System.out.println("Old goals" + executeQuery(sql));
+                        return true;
+                    } catch (SQLException se) {
+                        se.printStackTrace();
+                        return false;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
                     } finally {
-                    try{
-                    if(statement!=null)
-                    connection.close();
-                    }catch(SQLException se){
-                    }// do nothing
-                    try{
-                    if(connection!=null)
-                    connection.close();
-                    }catch(SQLException se){
-                    se.printStackTrace();
-                    }//end finally try
+                        try {
+                            if (statement != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                        }// do nothing
+                        try {
+                            if (connection != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                            se.printStackTrace();
+                        }//end finally try
                     }
 
                     break;
@@ -351,42 +346,44 @@ public class Innlevering2{
                     connection = null;
                     statement = null;
 
-                    try{
-                    Class.forName(JDBC_DRIVER);
+                    try {
+                        Class.forName(JDBC_DRIVER);
 
-                    connection = DriverManager.getConnection(DB_URL, username, password);
+                        connection = DriverManager.getConnection(DB_URL, username, password);
 
-                    statement = connection.createStatement();
-                    String sql = "SELECT * FROM Ovelse;";
+                        /*
+                        BURDE VEL HA UNIKE OVELSER?
+                         */
+                        statement = connection.createStatement();
+                        String sql = "SELECT * FROM Ovelse;";
 
-                    System.out.println("Known exercises" +  executeQuery(sql));
-                    return true;
-                    } catch(SQLException se){
-                    se.printStackTrace();
-                    return false;
-                    } catch(Exception e){
-                    e.printStackTrace();
-                    return false;
+                        System.out.println("Known exercises" + executeQuery(sql));
+                        return true;
+                    } catch (SQLException se) {
+                        se.printStackTrace();
+                        return false;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
                     } finally {
-                    try{
-                    if(statement!=null)
-                    connection.close();
-                    }catch(SQLException se){
-                    }// do nothing
-                    try{
-                    if(connection!=null)
-                    connection.close();
-                    }catch(SQLException se){
-                    se.printStackTrace();
-                    }//end finally try
+                        try {
+                            if (statement != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                        }// do nothing
+                        try {
+                            if (connection != null)
+                                connection.close();
+                        } catch (SQLException se) {
+                            se.printStackTrace();
+                        }//end finally try
                     }
                     break;
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             System.out.print(e);
         }
         return true;
-
     }
 
     private static boolean userStory3(){
@@ -397,7 +394,22 @@ public class Innlevering2{
             - endDate = dato for slutt av perioden
             Tar bare her differansen mellom begynnelse og slutt fordi det er representativt for hele perioden.
             - type = hvilke attribut man vil sjekke (f.eks. belastning hvis det er vekter)
+
+            TAR INN DATO SOM startDate = "dd/mm/yyyy"
          */
+        String startDate = "";
+        String endDate = "";
+        String type = "";
+        try {
+            System.out.println("Start date(yyyy-mm-dd): ");
+            startDate = cin.readLine();
+            System.out.println("End date(yyyy-mm-dd): ");
+            endDate = cin.readLine();
+            System.out.println("Type(styrke1/styrke2/styrke3/utholdenhet/svomming):"); // folge forsvaret sin saann greie
+            type = cin.readLine();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
         Connection  connection = null;
         Statement statement = null;
 
@@ -421,25 +433,24 @@ public class Innlevering2{
         e.printStackTrace();
         return false;
         } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
+            try {
+                if (statement != null)
+                    connection.close();
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+            return true;
         }
-
-        return true;
     }
 
-    private static boolean userStory4(){
+    private static boolean userStory4() {
         output = "4 - Check the difference between a specific result and the best result reached during a" +
-            "given period and the difference between the result and the current goal";
+                "given period and the difference between the result and the current goal";
         System.out.print(output);
         /*Trenger følgende:
             - pastDate = dato som definerer tid tilbake, må sjekke at den enten er 1 uke, 1 eller 3 måneder
@@ -447,54 +458,69 @@ public class Innlevering2{
             - aktivtMaal = aktivt maalId for perioden
             - type = type verdi man sjekker for målet
          */
+        System.out.println("Past date(yyyy-mm-dd): ");
+        String pastDate = "";
+        String maalIdSpesifikk = "";
+        String aktivtMaal = "";
+        String type = "";
+        try {
+            pastDate = cin.readLine();
+            System.out.println("Goal id: ");
+            maalIdSpesifikk = cin.readLine();
+            System.out.println("Active goal id: ");
+            aktivtMaal = cin.readLine();
+            System.out.println("Type to check(lengde/varighet/repetisjoner/sett/belastning):");
+            type = cin.readLine();
 
-        Connection  connection = null;
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        Connection connection = null;
         Statement statement = null;
-            try{
+        try {
             Class.forName(JDBC_DRIVER);
 
             connection = DriverManager.getConnection(DB_URL, username, password);
 
             statement = connection.createStatement();
-            String sql = "SELECT " + type + "FROM Maal WHERE Maal.maalId=" + maalIdSpesifikk +";";
+            String sql = "SELECT " + type + "FROM Maal WHERE Maal.maalId=" + maalIdSpesifikk + ";";
 
             String sql2 = "SELECT MAX(" + type + "FROM Okt WHERE Okt.dato>=" + pastDate + ";";
 
             String current = "SELECT " + type + "FROM Maal WHERE Maal.maalId=" + aktivtMaal + ";";
 
             //differansen mellom spesifikk mål og best i perioden
-            differanseSpesifikk = statement.executeQuery(sql) - statement.executeQuery(sql2);
+            int differanseSpesifikk = Integer.valueOf(statement.executeQuery(sql).toString()) - Integer.valueOf(statement.executeQuery(sql2).toString());
             System.out.println("Differnse mellom spesifikt mål og beste = " + differanseSpesifikk);
 
             int differanseAktiv = Integer.valueOf(statement.executeQuery(sql2).toString()) - Integer.valueOf(statement.executeQuery(sql3).toString());
             System.out.println("Differanse mellom aktivt mål og best =" + differanseAktiv);
 
             return true;
-            } catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return false;
-            } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-            } finally {
-            try{
-            if(statement!=null)
-            connection.close();
-            }catch(SQLException se){
+        } finally {
+            try {
+                if (statement != null)
+                    connection.close();
+            } catch (SQLException se) {
             }// do nothing
-            try{
-            if(connection!=null)
-            connection.close();
-            }catch(SQLException se){
-            se.printStackTrace();
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
             }//end finally try
+            return true;
         }
-
-
-        return true;
     }
 
-    private static boolean userStory5(){
+    private static boolean userStory5() {
         output = "5 - Copy a specific workout as a template";
         System.out.print(output);
         /*Trenger følgende input:
@@ -503,39 +529,57 @@ public class Innlevering2{
             - gittDato = dato for treningsøkt som skal kopieres
             - gittTidspunkt = tidspunkt for treningsøkt som skal kopieres
         */
-        Connection  connection = null;
+        String dato = "";
+        String tidspunkt = "";
+        String gittDato = "";
+        String gittTidspunkt = "";
+        try {
+            System.out.println("Date for the new workout(yyyy-mm-dd):");
+            dato = cin.readLine();
+            System.out.println("Time for the new workout(hh:mm):");
+            tidspunkt = cin.readLine().concat(":00"); //legger til så det går rett inn i databasen
+            System.out.println("Date for workout to copy(yyyy-mm-dd):");
+            gittDato = cin.readLine();
+            System.out.println("Time for the workout to copy(hh:mm):");
+            gittTidspunkt = cin.readLine().concat(":00");
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+
+        Connection connection = null;
         Statement statement = null;
 
-        try{
-        Class.forName(JDBC_DRIVER);
+        try {
+            Class.forName(JDBC_DRIVER);
 
-        connection = DriverManager.getConnection(DB_URL, username, password);
+            connection = DriverManager.getConnection(DB_URL, username, password);
 
-        statement = connection.createStatement();
-        String sql = "INSERT INTO Okt(" + dato +", " + ", " + tidspunkt + ", varighet, type, vurdering) SELECT tidspunkt, varighet, type, vurdering FROM Okt WHERE Okt.dato =" + gittDato + " AND Okt.tidspunkt=" + gittTidspunkt + ";";
+            statement = connection.createStatement();
+            String sql = "INSERT INTO Okt(" + dato + ", " + ", " + tidspunkt + ", varighet, type, vurdering) SELECT tidspunkt, varighet, type, vurdering FROM Okt WHERE Okt.dato =" + gittDato + " AND Okt.tidspunkt=" + gittTidspunkt + ";";
 
-        statement.executeQuery(sql);
-        return true;
-        } catch(SQLException se){
-        se.printStackTrace();
-        return false;
-        } catch(Exception e){
-        e.printStackTrace();
-        return false;
+            statement.executeQuery(sql);
+            return true;
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
+            try {
+                if (statement != null)
+                    connection.close();
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+            return true;
         }
-        return true;
     }
 
     private static boolean userStory6(){
@@ -546,6 +590,30 @@ public class Innlevering2{
         //hvilepuls i dagsform for en dato og intensitet i ovelser på en dato
 
         //LYKKE TIL HAJEM :D
+
+        // Vet ikke hva du vil ha hajem :S men gir deg nå litt av hvert så kan du fjerne/hente inn mer om du trenger det
+        /*
+            startDate - Dato for å sjekke forholdet mellom resultat og dagsform start
+            endDate - ------------------||---------------------- bare at slutten
+            type - navn på ovelse man sjekker
+         */
+        String startDate = "";
+        String endDate = "";
+        String type = "";
+        try {
+            System.out.println("Start date of period to check(yyyy-mm-dd):");
+            startDate = cin.readLine();
+            System.out.println("End date of period to check(yyyy-mm-dd):");
+            endDate = cin.readLine();
+            System.out.println("Name of excersice to compare:");
+            type = cin.readLine();
+        }catch(IOException e) {
+            System.out.println(e);
+        }
+
+        /*
+            GL HF HAJEM!
+         */
 
 
 
@@ -579,177 +647,254 @@ public class Innlevering2{
         e.printStackTrace();
         return false;
         } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
+            try {
+                if (statement != null)
+                    connection.close();
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+            return true;
         }
-        return true;
     }
 
-    private static boolean userStory8(){
+    private static boolean userStory8() {
         output = "8 - Add, reorganize and delete exercises, groups and subgroups";
         System.out.print(output);
         /*Add an exercise
          *TRENGER FØLGENDE VALUES SOM INPUT:
-         - alt for en exercise
+         - alt for en exercise, gir deg,  q = ["navn","dd","mm","yyyy","beskrivelse","lengde","intensitet","marsj(0 er false,1 er true)","repetisjoner","sett","belastning","maalId"]
          - dato for økten den var en del av
          */
-        if(choice == 1){
-        Connection  connection = null;
-        Statement statement = null;
+        int choice;
+        String[] q = new String[13];
 
-        try{
-        Class.forName(JDBC_DRIVER);
-
-        connection = DriverManager.getConnection(DB_URL, username, password);
-
-        statement = connection.createStatement();
-        String sql = "SELECT INTO Ovelse" +
-        + "VALUES("
-        + navn + "," + beskrivelse + "," + intensitet + "," + maalId + ","
-        +  lengde + "," + marsj + "," + repetisjoner + "," + sett + "," + belastning
-        + ");"
-
-        String sql2 = "INSERT INTO Utfort"
-        + "VALUES ("
-        + prestasjon
-        + "," + navn
-        + "," + dato
-        + ");";
-        statement.executeQuery(sql);
-        statement.executeQuery(sql2);
-        return true;
-        } catch(SQLException se){
-        se.printStackTrace();
-        return false;
-        } catch(Exception e){
-        e.printStackTrace();
-        return false;
-        } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
+        try {
+            System.out.println("1 - Add exercise\n" +
+                    "2 - Delete single exercise\n" +
+                    "3 - Delete all exercises on this date\n" +
+                    "4 - Delete all exercises of this name");
+            choice = Integer.valueOf(cin.readLine());
+        } catch (IOException e) {
+            System.out.println(e);
         }
+        if (choice == 1) {
+            Connection connection = null;
+            Statement statement = null;
+
+            try {
+                System.out.println("Name:");
+                q[0] = cin.readLine();
+                System.out.println("Date(dd/mm/yyyy):");
+                String inp = cin.readLine();
+                q[1] = inp.split("/")[0];
+                q[2] = inp.split("/")[1];
+                q[3] = inp.split("/")[2];
+                System.out.println("Description(on a single line):");
+                q[4] = cin.readLine();
+                System.out.println("Length(0 if not needed): ");
+                q[5] = cin.readLine();
+                System.out.println("Intensity(0 if not needed): ");
+                q[6] = cin.readLine();
+                System.out.println("March(0 if not needed, 1 if it was): "); //er vel boolean i db, så 0 = false
+                q[7] = cin.readLine();
+                System.out.println("Number of repetitions(0 if not needed): ");
+                q[8] = cin.readLine();
+                System.out.println("Number of sets(0 if not needed): ");
+                q[9] = cin.readLine();
+                System.out.println("Weight(0 if not needed): ");
+                q[10] = cin.readLine();
+                System.out.println("Performance: ");
+                q[11] = cin.readLine();
+                System.out.println("Goal id(0 if none): ");
+                q[12] = cin.readLine();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+            String dato = q[3] + "-" + q[2] + "-" + q[1];
+            String navn = q[0];
+            String beskrivelse = q[4];
+            String intensitet = q[6];
+            String lengde = q[5];
+            String marsj = q[7];
+            String repetisjoner = q[8];
+            String sett = q[9];
+            String belastning = q[10];
+            String prestasjon = q[11];
+            String maalId = q[12];
+
+
+            try {
+                Class.forName(JDBC_DRIVER);
+
+                connection = DriverManager.getConnection(DB_URL, username, password);
+
+                statement = connection.createStatement();
+                String sql = "SELECT INTO Ovelse"
+                        + "VALUES("
+                        + navn + "," + beskrivelse + "," + intensitet + "," + maalId + ","
+                        + lengde + "," + marsj + "," + repetisjoner + "," + sett + "," + belastning
+                        + ");";
+
+                String sql2 = "INSERT INTO Utfort"
+                        + "VALUES ("
+                        + prestasjon
+                        + "," + navn
+                        + "," + dato
+                        + ");";
+                statement.executeQuery(sql);
+                statement.executeQuery(sql2);
+                return true;
+            } catch (SQLException se) {
+                se.printStackTrace();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    if (statement != null)
+                        connection.close();
+                } catch (SQLException se) {
+                }// do nothing
+                try {
+                    if (connection != null)
+                        connection.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }//end finally try
+            }
+        } else if (choice == 2) {
+            //Delete single exercise
+            String navn = "";
+            String dato = "";
+
+            try {
+                System.out.println("Name:");
+                navn = cin.readLine();
+                System.out.println("Date(yyyy-mm-dd):");
+                dato = cin.readLine();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+            try {
+                Class.forName(JDBC_DRIVER);
+
+                connection = DriverManager.getConnection(DB_URL, username, password);
+
+                statement = connection.createStatement();
+                String sql = "DELETE FROM Utfort WHERE dato=" + dato + "AND navn=" + navn + ";";
+                statement.executeQuery(sql);
+                return true;
+            } catch (SQLException se) {
+                se.printStackTrace();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    if (statement != null)
+                        connection.close();
+                } catch (SQLException se) {
+                }// do nothing
+                try {
+                    if (connection != null)
+                        connection.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }//end finally try
+            }
+
+
+        } else if (choice == 3) {
+            //delete based on date
+            //TRENGER: Datoen ovelsen ble utført
+
+            String dato = "";
+
+            try {
+                System.out.println("Date(yyyy-mm-dd):");
+                dato = cin.readLine();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+            try {
+                Class.forName(JDBC_DRIVER);
+
+                connection = DriverManager.getConnection(DB_URL, username, password);
+
+                statement = connection.createStatement();
+                String sql = "DELETE FROM Utfort WHERE dato=" dato + ";"
+                statement.executeQuery(sql);
+                return true;
+            } catch (SQLException se) {
+                se.printStackTrace();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    if (statement != null)
+                        connection.close();
+                } catch (SQLException se) {
+                }// do nothing
+                try {
+                    if (connection != null)
+                        connection.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }//end finally try
+            }
+
+
+        } else if (choice == 4) {
+
+            String navn = "";
+
+            try {
+                System.out.println("Name:");
+                navn = cin.readLine();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+            //Delete øvelse based on navn
+            try {
+                Class.forName(JDBC_DRIVER);
+
+                connection = DriverManager.getConnection(DB_URL, username, password);
+
+                statement = connection.createStatement();
+                String sql = "DELETE FROM Utfort WHERE navn=" navn + ";"
+                statement.executeQuery(sql);
+                return true;
+            } catch (SQLException se) {
+                se.printStackTrace();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    if (statement != null)
+                        connection.close();
+                } catch (SQLException se) {
+                }// do nothing
+                try {
+                    if (connection != null)
+                        connection.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }//end finally try
+            }
         }
-
-
-
-
-        else if(choice == 2){
-        //Delete single exercise
-        Class.forName(JDBC_DRIVER);
-
-        connection = DriverManager.getConnection(DB_URL, username, password);
-
-        statement = connection.createStatement();
-        String sql = "DELETE FROM Utfort WHERE dato=" dato + "AND navn=" navn + ";"
-        statement.executeQuery(sql);
-        return true;
-        } catch(SQLException se){
-        se.printStackTrace();
-        return false;
-        } catch(Exception e){
-        e.printStackTrace();
-        return false;
-        } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
-        }
-        }
-
-
-
-
-        else if(choice == 3) {
-        //delete based on date
-        //TRENGER: Datoen ovelsen ble utført
-        Class.forName(JDBC_DRIVER);
-
-        connection = DriverManager.getConnection(DB_URL, username, password);
-
-        statement = connection.createStatement();
-        String sql = "DELETE FROM Utfort WHERE dato=" dato + ";"
-        statement.executeQuery(sql);
-        return true;
-        } catch(SQLException se){
-        se.printStackTrace();
-        return false;
-        } catch(Exception e){
-        e.printStackTrace();
-        return false;
-        } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
-        }
-        }
-
-
-
-
-        else if(choice == 4){
-
-        //Delete øvelse based on navn
-        Class.forName(JDBC_DRIVER);
-
-        connection = DriverManager.getConnection(DB_URL, username, password);
-
-        statement = connection.createStatement();
-        String sql = "DELETE FROM Utfort WHERE navn=" navn + ";"
-        statement.executeQuery(sql);
-        return true;
-        } catch(SQLException se){
-        se.printStackTrace();
-        return false;
-        } catch(Exception e){
-        e.printStackTrace();
-        return false;
-        } finally {
-        try{
-        if(statement!=null)
-        connection.close();
-        }catch(SQLException se){
-        }// do nothing
-        try{
-        if(connection!=null)
-        connection.close();
-        }catch(SQLException se){
-        se.printStackTrace();
-        }//end finally try
-        }}
         return true;
     }
 
