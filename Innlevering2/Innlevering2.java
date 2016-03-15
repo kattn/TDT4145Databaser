@@ -154,12 +154,64 @@ public class Innlevering2{
     private static boolean userStory2(){
         output = "2 - Register a new workout goal, view old goals or view known exercises\n";
         System.out.print(output);
-        System.out.println("1 - register new workout goal\n" +
+        System.out.println("1 - Register new workout goal\n" +
                 "2 - View old goals\n" +
                 "3 - View known exercises\n");
         try {
             String inp = cin.readLine();
+            switch (inp){
+                case "quit":
+                    return false;
+                case "1":
+                    String[] query = new String[9];
+                    System.out.println("Date(dd/mm/yyyy:");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[0] = inp.split("/")[0];
+                    query[1] = inp.split("/")[1];
+                    query[2] = inp.split("/")[2];
+                    System.out.println("Name of exercise:");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[3] = inp;
+                    System.out.println("Goal length(0 if not needed):");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[4] = inp;
+                    System.out.println("Goal duration(0 if not needed):");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[5] = inp;
+                    System.out.println("Number repetitions(0 if not needed):");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[6] = inp;
+                    System.out.println("Number of sets(0 if not needed):");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[7] = inp;
+                    System.out.println("Goal weight(0 if not needed):");
+                    inp = cin.readLine();
+                    if(inp.equals("quit"))
+                        return false;
+                    query[8] = inp;
 
+                    /*
+                    INSERT INTO MAAL
+                    query: dd,mm,yyyy,navn,lengde,varighet,repitisjon,sett,belastning
+
+                     */
+                case "2":
+                    break;
+                case "3":
+                    break;
+            }
         } catch(IOException e){
             System.out.print(e);
         }
