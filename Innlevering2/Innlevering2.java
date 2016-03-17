@@ -58,6 +58,7 @@ public class Innlevering2{
         //tar inn input til å lage query
         System.out.print("Type in date and time(dd/mm/yyyy,hh:mm):\n");
         String[] query = new String[12]; //dd,mm,yyyy,hh,mm,varighetHH,varighetMM,type,vurdering,hvilepuls,vaer,tempertur
+        ArrayList<String[]> ovelser;
         try {
             String tempInp = cin.readLine();
             if ((tempInp).equals("quit"))
@@ -104,7 +105,7 @@ public class Innlevering2{
                 System.out.print(inp + " ");
             }
 
-            ArrayList<String[]> ovelser = getOvelser();
+            ovelser = setOvelser();
             //Ovlerser er en arraylist med String[12] av typen,
             // name, dd,mm,yyyy,beskrivelse, lengde, intensitet, marsj(bool med 0 som false of 1 som true), repetisjoner, sett, belastning, prestasjon
 
@@ -134,7 +135,24 @@ public class Innlevering2{
                     +
 
                     statement.executeQuery(sql);
+
+            //Itererer gjennom alle øvelser som er utført, og legger dem til i databasen
+            for (int i = 0; i < ovelser.size(); i++) {
+                String sql3 = "INSERT INTO Ovelse(dato, beskrivelse, intensitet, maalid, lengde, marsj, repetisjoner, sett, belastning)"
+                        + "VALUES ("
+                        + ovelser.get(i)[3] + "-" + ovelser.get(i)[2] + "-" + ovelser.get(i)[1] + ","
+                        + ovelser.get(i)[4] + ","
+                        + ovelser.get(i)[5] + ","
+                        + ovelser.get(i)[6] + ","
+                        + ovelser.get(i)[7] + ","
+                        + ovelser.get(i)[8] + ","
+                        + ovelser.get(i)[9] + ","
+                        + ovelser.get(i)[10] + ","
+                        + ovelser.get(i)[11] + ",";
+            }
             //System.out.println("Insert into " + tableName + " complete. ");
+
+
             return true;
         } catch (SQLException se) {
             se.printStackTrace();
@@ -158,7 +176,7 @@ public class Innlevering2{
         }
     }
 
-    private static ArrayList<String[]> getOvelser(){
+    private static ArrayList<String[]> setOvelser(){
         ArrayList<String[]> strings = new ArrayList<String[]>();
         System.out.println("Add an exercise(y), type q when done.");
         try {
@@ -194,6 +212,7 @@ public class Innlevering2{
                 System.out.println("Done adding exercises? q for yes, anything else for no");
                 inp = cin.readLine();
             }
+            return strings;
         } catch (IOException e){
             System.out.print(e);
         }
