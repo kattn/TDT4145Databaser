@@ -630,7 +630,7 @@ public class Innlevering2{
         }catch(IOException e) {
             System.out.println(e);
         }
-        
+
 
         //resulst and daily forms from given period
         String[] resultSet;
@@ -658,20 +658,25 @@ public class Innlevering2{
             String sql2 = "SELECT dato FROM Ovelse WHERE navn LIKE" + type;
 
             String sql3 = "SELECT dagsform FROM Dagsform WHERE dato >" + type;
+
+
+            //calculates the different sums
+            for (int i = 0; i < resultSet.length;i++) {
+                //since neither intensity or daily form can be null, the sets will always have the same size
+                sumResult += resultSet[i];
+                sumForm += formSet[i];
+
+                sumFormResult += (resultSet[i]*formSet[i]);
+
+                sumResultSqr += ((resultSet[i])^2);
+                sumFormSqr += ((formSet[i])^2);
+            }
+
+            r = (sumFormResult - ((((sumResult*sumForm)/resultSet.length))/(sqrt((sumResultSqr-((sumResult^2)/resultSet.length))*(sumFormSqr-((sumForm^2)/resultSet.length))))));
+        } catch (SQLException se) {
+            se.printStackTrace();
         }
-        //calculates the different sums
-        for (int i = 0; i < resultSet.length;i++) {
-            //since neither intensity or daily form can be null, the sets will always have the same size
-            sumResult += resultSet[i];
-            sumForm += formSet[i];
 
-            sumFormResult += (resultSet[i]*formSet[i]);
-
-            sumResultSqr += ((resultSet[i])^2);
-            sumFormSqr += ((formSet[i])^2);
-        }
-
-        r = (sumFormResult - ((((sumResult*sumForm)/resultSet.length))/(sqrt((sumResultSqr-((sumResult^2)/resultSet.length))*(sumFormSqr-((sumForm^2)/resultSet.length))))));
 
 
 
