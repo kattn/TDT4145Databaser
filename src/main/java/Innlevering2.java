@@ -979,6 +979,8 @@ public class Innlevering2{
     }
 
     public static void main(String[] args){
+        createTables create = new createTables();
+        create.createTable();
         cin = new BufferedReader(new InputStreamReader(System.in));
         try {
             int temp = welcomeText();
