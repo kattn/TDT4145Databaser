@@ -9,7 +9,7 @@ public class createTables {
 	static final String username = "username";
 	static final String password = "password";
 	
-	public static void main(String[] args){
+	public void createTable(){
 		Connection connection = null;
 		Statement statement = null;
 		try {
