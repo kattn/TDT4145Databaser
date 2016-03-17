@@ -687,7 +687,7 @@ public class Innlevering2{
 
 
 
-        return r;
+        return true;
     }
 
     private static boolean userStory7(){
