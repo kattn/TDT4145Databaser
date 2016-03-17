@@ -1008,11 +1008,11 @@ public class Innlevering2{
                             return;
                         }
                         break;
-                    case 6:
+                    /*case 6:
                         if(!userStory6()){
                             return;
                         }
-                        break;
+                        break;*/
                     case 7:
                         if(!userStory7()){
                             return;
