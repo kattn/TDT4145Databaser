@@ -227,180 +227,176 @@ public class Innlevering2{
                 "3 - View known exercises\n");
         try {
             String inp = cin.readLine();
-            switch (inp) {
-                case "quit":
+            if(inp.equals("quit")) {
+                return false;
+            } else if (inp.equals("1")) {
+                String[] query = new String[9];
+                System.out.println("Date(dd/mm/yyyy:");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
                     return false;
-                case "1":
-                    String[] query = new String[9];
-                    System.out.println("Date(dd/mm/yyyy:");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[0] = inp.split("/")[0];
-                    query[1] = inp.split("/")[1];
-                    query[2] = inp.split("/")[2];
-                    System.out.println("Name of exercise:");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[3] = inp;
-                    System.out.println("Goal length(0 if not needed):");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[4] = inp;
-                    System.out.println("Goal duration(0 if not needed):");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[5] = inp;
-                    System.out.println("Number repetitions(0 if not needed):");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[6] = inp;
-                    System.out.println("Number of sets(0 if not needed):");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[7] = inp;
-                    System.out.println("Goal weight(0 if not needed):");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-                    query[8] = inp;
+                query[0] = inp.split("/")[0];
+                query[1] = inp.split("/")[1];
+                query[2] = inp.split("/")[2];
+                System.out.println("Name of exercise:");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[3] = inp;
+                System.out.println("Goal length(0 if not needed):");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[4] = inp;
+                System.out.println("Goal duration(0 if not needed):");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[5] = inp;
+                System.out.println("Number repetitions(0 if not needed):");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[6] = inp;
+                System.out.println("Number of sets(0 if not needed):");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[7] = inp;
+                System.out.println("Goal weight(0 if not needed):");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
+                query[8] = inp;
 
                     /*
                     INSERT INTO MAAL
                     query: dd,mm,yyyy,navn,lengde,varighet,repitisjon,sett,belastning
                     */
-                    Connection connection = null;
-                    Statement statement = null;
+                Connection connection = null;
+                Statement statement = null;
 
+                try {
+                    Class.forName(JDBC_DRIVER);
+
+                    connection = DriverManager.getConnection(DB_URL, username, password);
+
+                    statement = connection.createStatement();
+                    String sql = "INSERT INTO Maal "
+                            + "VALUES ("
+                            + query[2] + "-" + query[1] + "-" + query[0] + ", "
+                            + query[3] + ", "
+                            + query[4] + ", "
+                            + query[5] + ", "
+                            + query[6] + ", "
+                            + query[7] + ", "
+                            + query[8] + ", "
+                            + ");";
+
+                    int progression = Integer.valueOf(statement.executeQuery(sql).toString()) - Integer.valueOf(statement.executeQuery(sql).toString());
+                    System.out.println("Progression in given period:" + progression);
+                    return true;
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                    return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
                     try {
-                        Class.forName(JDBC_DRIVER);
-
-                        connection = DriverManager.getConnection(DB_URL, username, password);
-
-                        statement = connection.createStatement();
-                        String sql = "INSERT INTO Maal "
-                                + "VALUES ("
-                                + query[2] + "-" + query[1] + "-" + query[0] + ", "
-                                + query[3] + ", "
-                                + query[4] + ", "
-                                + query[5] + ", "
-                                + query[6] + ", "
-                                + query[7] + ", "
-                                + query[8] + ", "
-                                + ");";
-
-                        int progression = Integer.valueOf(statement.executeQuery(sql)) - Integer.valueOf(statement.executeQuery(sql).toString());
-                        System.out.println("Progression in given period:" + progression);
-                        return true;
+                        if (statement != null)
+                            connection.close();
+                    } catch (SQLException se) {
+                    }// do nothing
+                    try {
+                        if (connection != null)
+                            connection.close();
                     } catch (SQLException se) {
                         se.printStackTrace();
-                        return false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return false;
-                    } finally {
-                        try {
-                            if (statement != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                        }// do nothing
-                        try {
-                            if (connection != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                            se.printStackTrace();
-                        }//end finally try
-                    }
+                    }//end finally try
+                }
+            } else if (inp.equals("2")) {
+                System.out.println("Wanted exercise:");
+                inp = cin.readLine();
+                if (inp.equals("quit"))
+                    return false;
 
-                case "2":
-                    System.out.println("Wanted exercise:");
-                    inp = cin.readLine();
-                    if (inp.equals("quit"))
-                        return false;
-
-                    connection = null;
-                    statement = null;
+                Connection connection = null;
+                Statement statement = null;
 
                     /*
                     MANGLER Å BRUKE inp FOR Å VELGE RIKTIG OVELSE
                      */
 
+                try {
+                    Class.forName(JDBC_DRIVER);
+
+                    connection = DriverManager.getConnection(DB_URL, username, password);
+
+                    statement = connection.createStatement();
+                    String sql = "SELECT * FROM Maal;";
+
+                    System.out.println("Old goals" + statement.executeQuery(sql));
+                    return true;
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                    return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
                     try {
-                        Class.forName(JDBC_DRIVER);
-
-                        connection = DriverManager.getConnection(DB_URL, username, password);
-
-                        statement = connection.createStatement();
-                        String sql = "SELECT * FROM Maal;";
-
-                        System.out.println("Old goals" + statement.executeQuery(sql));
-                        return true;
+                        if (statement != null)
+                            connection.close();
+                    } catch (SQLException se) {
+                    }// do nothing
+                    try {
+                        if (connection != null)
+                            connection.close();
                     } catch (SQLException se) {
                         se.printStackTrace();
-                        return false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return false;
-                    } finally {
-                        try {
-                            if (statement != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                        }// do nothing
-                        try {
-                            if (connection != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                            se.printStackTrace();
-                        }//end finally try
-                    }
+                    }//end finally try
+                }
+            } else if (inp.equals("3")) {
+                Connection connection = null;
+                Statement statement = null;
 
-                    break;
-                case "3":
-                    connection = null;
-                    statement = null;
+                try {
+                    Class.forName(JDBC_DRIVER);
 
-                    try {
-                        Class.forName(JDBC_DRIVER);
-
-                        connection = DriverManager.getConnection(DB_URL, username, password);
+                    connection = DriverManager.getConnection(DB_URL, username, password);
 
                         /*
                         BURDE VEL HA UNIKE OVELSER?
                          */
-                        statement = connection.createStatement();
-                        String sql = "SELECT * FROM Ovelse;";
+                    statement = connection.createStatement();
+                    String sql = "SELECT * FROM Ovelse;";
 
-                        System.out.println("Known exercises" + statement.executeQuery(sql));
-                        return true;
+                    System.out.println("Known exercises" + statement.executeQuery(sql));
+                    return true;
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                    return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
+                    try {
+                        if (statement != null)
+                            connection.close();
+                    } catch (SQLException se) {
+                    }// do nothing
+                    try {
+                        if (connection != null)
+                            connection.close();
                     } catch (SQLException se) {
                         se.printStackTrace();
-                        return false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return false;
-                    } finally {
-                        try {
-                            if (statement != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                        }// do nothing
-                        try {
-                            if (connection != null)
-                                connection.close();
-                        } catch (SQLException se) {
-                            se.printStackTrace();
-                        }//end finally try
-                    }
-                    break;
+                    }//end finally try
+                }
+
             }
         } catch (IOException e) {
-            System.out.print(e);
+                System.out.print(e);
         }
         return true;
     }
