@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.sql.*;
 import java.lang.math;
-import java.
 
 //nr til Bjerke 95998212
 
