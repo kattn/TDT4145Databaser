@@ -2,6 +2,8 @@ package Innlevering2;
 import java.io.*;
 import java.util.ArrayList;
 import java.sql.*;
+import java.lang.math;
+import java.
 
 //nr til Bjerke 95998212
 
@@ -182,7 +184,7 @@ public class Innlevering2{
         try {
             String inp = cin.readLine();
             String[] q;
-            while(!inp.equals("q")){
+            while(!inp.equals("q")) {
                 q = new String[12];
                 System.out.println("Name:");
                 q[0] = cin.readLine();
@@ -607,7 +609,6 @@ public class Innlevering2{
 
         //Bruker Pearson sin korrelasjons koeffisient formel for å sjekke korrelasjon mellom
         //hvilepuls i dagsform for en dato og intensitet i ovelser på en dato
-
         //LYKKE TIL HAJEM :D
 
         // Vet ikke hva du vil ha hajem :S men gir deg nå litt av hvert så kan du fjerne/hente inn mer om du trenger det
@@ -629,6 +630,51 @@ public class Innlevering2{
         }catch(IOException e) {
             System.out.println(e);
         }
+        
+
+        //resulst and daily forms from given period
+        String[] resultSet;
+        String[] formSet;
+        //sum of sets
+        int sumResult = 0;
+        int sumForm = 0;
+        //sum of combined set
+        int sumFormResult = 0;
+        //sum of set^2
+        int sumResultSqr = 0;
+        int sumFormSqr = 0;
+        //pearson correlation coefficient
+        double r;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+
+            connection = DriverManager.getConnection(DB_URL, username, password);
+
+            statement = connection.createStatement();
+
+            String sql1 = "SELECT intensitet FROM Ovelse WHERE navn LIKE" + type;
+
+            String sql2 = "SELECT dato FROM Ovelse WHERE navn LIKE" + type;
+
+            String sql3 = "SELECT dagsform FROM Dagsform WHERE dato >" + type;
+        }
+        //calculates the different sums
+        for (int i = 0; i < resultSet.length;i++) {
+            //since neither intensity or daily form can be null, the sets will always have the same size
+            sumResult += resultSet[i];
+            sumForm += formSet[i];
+
+            sumFormResult += (resultSet[i]*formSet[i]);
+
+            sumResultSqr += ((resultSet[i])^2);
+            sumFormSqr += ((formSet[i])^2);
+        }
+
+        r = (sumFormResult - ((((sumResult*sumForm)/resultSet.length))/(sqrt((sumResultSqr-((sumResult^2)/resultSet.length))*(sumFormSqr-((sumForm^2)/resultSet.length))))));
+
+
+
 
         /*
             GL HF HAJEM!
@@ -636,7 +682,7 @@ public class Innlevering2{
 
 
 
-        return true;
+        return r;
     }
 
     private static boolean userStory7(){
